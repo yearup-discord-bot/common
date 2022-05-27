@@ -31,7 +31,7 @@ const commandFiles = fs.readdirSync('../commands').filter(file => file.endsWith(
 for (const file of commandFiles) {
 
 	// load the file (module) into command
-	const command = require(`./commands/${file}`);
+	const command = require(`../commands/${file}`);
 
 	// set a new item in the collection
 	// with the command name as the key and the exported module (code to execute) as the value
@@ -50,7 +50,7 @@ for (const file of commandFiles) {
 const eventFiles = fs.readdirSync('../events').filter(file => file.endsWith('.js'));
 
 for (const file of eventFiles) {
-	const event = require(`./events/${file}`);
+	const event = require(`../events/${file}`);
 
 	// THE FOLLOWING! We aren't loading commands we are creating event listeners...
 	// that means we are linking events, by name, to code that will be executed once the event occurs
