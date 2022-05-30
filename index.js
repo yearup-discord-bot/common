@@ -1,13 +1,23 @@
-// load in required modules for logging and filesystem manipulation
-const fs = require('node:fs');
-require('log-timestamp');
+const { exit } = require('node:process');
 
 // require the necessary discord.js modules
 const { Client, Collection, Intents } = require('discord.js');
 
+// load in required modules for logging and filesystem manipulation
+const fs = require('node:fs');
+
 // load the unique, secure, super secret token from the config.json file...
 const { token } = require('../config.json');
-const {exit} = require('node:process');
+
+if ( process.argv.indexOf('--quiet') != -1) {
+	require('log-timestamp');
+} else {
+	console.log('Binding console to 127.0.0.1:5656');
+	require('./http-logger.js') (() => {
+		return '[' + new Date().toISOString() + '] %s';
+	});
+}
+
 
 // create a new client instance, this represents our bot in code or bot is a client connecting to a discord server
 const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
@@ -75,7 +85,7 @@ function loadEvents(client, path)
 			client.on(event.name, (...args) => event.execute(...args));
 		}
 	}
-	
+
 	return 0;
 }
 
