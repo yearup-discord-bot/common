@@ -14,7 +14,7 @@ if ( process.argv.indexOf('--quiet') != -1) {
 } else {
 	console.log('Binding console to 127.0.0.1:5656');
 	require('./http-logger.js') (() => {
-		return '[' + new Date().toISOString() + '] %s';
+		return '[' + new Date() + '] %s';
 	});
 }
 
@@ -37,7 +37,7 @@ client.commands = new Collection();
 // load files from the dir ./commands using filter
 // filter to only javascript files (ends with '.js')
 
-console.log("Loading commands...");
+console.log('Loading commands...');
 
 const commandFiles = fs.readdirSync('../commands').filter(file => file.endsWith('.js'));
 

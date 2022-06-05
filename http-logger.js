@@ -15,7 +15,7 @@ module.exports = patch;
 function patch(fn) {
 	Object.keys(funcs).forEach(function(k) {
 		console[k] = function() {
-			var s = typeof fn === 'function' ? fn() : fn;
+			const s = typeof fn === 'function' ? fn() : fn;
 			arguments[0] = util.format(s, arguments[0]);
 			funcs[k].apply(console, arguments);
 
