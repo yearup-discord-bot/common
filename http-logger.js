@@ -1,6 +1,8 @@
-var util = require('util');
-var http = require('node:http');
-var funcs = {
+const util = require('util');
+const http = require('node:http');
+const { Formatters } = require( 'discord.js' );
+
+const funcs = {
 	log: console.log.bind(console),
 	info: console.info.bind(console),
 	warn: console.warn.bind(console),
@@ -15,6 +17,9 @@ function patch(fn) {
 		console[k] = function() {
 			var s = typeof fn === 'function' ? fn() : fn;
 			arguments[0] = util.format(s, arguments[0]);
+			funcs[k].apply(console, arguments);
+
+			arguments[0] = Formatters.inlineCode( arguments[0] );
 
 			const options = {
 				host: '127.0.0.1',
@@ -22,7 +27,7 @@ function patch(fn) {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'text/plain',
-					'Content-Lenght': Buffer.byteLength( arguments[0] )
+					'Content-Length': Buffer.byteLength( arguments[0] )
 				}
 			}
 
@@ -34,9 +39,6 @@ function patch(fn) {
 
 			request.write( arguments[0] );
 			request.end();
-
-
-			funcs[k].apply(console, arguments);
 		};
 	});
 }
